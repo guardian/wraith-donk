@@ -19,6 +19,6 @@ get '/' do
     @wraith_manager.generate_gallery
   end
 
-  "Started process pid: #{pid}"
+  "Started process pid: #{pid}<br/>The results will be visible at /gallery.html"
 
 end
