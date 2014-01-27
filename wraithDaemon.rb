@@ -17,7 +17,7 @@ get '/' do
     spider.check_for_paths
     @save_images = Wraith::SaveImages.new(@config)
     @save_images.save_images
-    crop = Wraith::CropImages.new(@save_images.directory)
+    crop = Wraith::CropImages.new(@save_images.directory, @config)
     crop.crop_images
     compare = Wraith::CompareImages.new(@config)
     compare.compare_images
