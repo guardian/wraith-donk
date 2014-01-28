@@ -8,7 +8,14 @@ require 'wraith'
 
 get '/' do
 
+  pidFile = File.expand_path("wraith.pid", File.dirname(__FILE__));
+
+  if File.exist? pidFile
+    return "Work already in progress, check the gallery for results"
+  end
+
   pid = fork do
+    File.open(pidFile, 'w') { |file| file.write("") }
     @config = ('config')
     folders = Wraith::FolderManager.new(@config)
     folders.clear_shots_folder
@@ -17,7 +24,7 @@ get '/' do
     spider.check_for_paths
     @save_images = Wraith::SaveImages.new(@config)
     @save_images.save_images
-    crop = Wraith::CropImages.new(@save_images.directory, @config)
+    crop = Wraith::CropImages.new(@config)
     crop.crop_images
     compare = Wraith::CompareImages.new(@config)
     compare.compare_images
@@ -25,8 +32,9 @@ get '/' do
     thumbs.generate_thumbnails
     gallery = Wraith::GalleryGenerator.new(@save_images.directory)
     gallery.generate_gallery
+    File.delete pidFile
   end
-
+  File.open(pidFile, 'w') { |file| file.write("#{pid}") }
   "Started process pid: #{pid}<br/>The results will be visible at /gallery.html"
 
 end
