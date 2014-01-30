@@ -34,15 +34,15 @@ def email
 
 
   message = <<MESSAGE
-From: #{@daemonConfig['wrait_daemon']['notifications']['from']}
-To: #{@daemonConfig['wrait_daemon']['notifications']['to']}
-Subject: #{@daemonConfig['wrait_daemon']['notifications']['subject']}
+From: #{@daemonConfig['wraith_daemon']['notifications']['from']}
+To: #{@daemonConfig['wraith_daemon']['notifications']['to']}
+Subject: #{@daemonConfig['wraith_daemon']['notifications']['subject']}
 
 wraith done with errors
 MESSAGE
 
   Net::SMTP.start('mx.gc2.dc1.gnm') do |smtp|
-    smtp.send_message message, @daemonConfig['wrait_daemon']['notifications']['from'], @daemonConfig['wrait_daemon']['notifications']['to']
+    smtp.send_message message, @daemonConfig['wraith_daemon']['notifications']['from'], @daemonConfig['wraith_daemon']['notifications']['to']
   end
 
 
@@ -52,7 +52,7 @@ end
 #set :static, true
 #set :public_dir, Proc.new { File.join(File.dirname(__FILE__), "public") }
 
-set :port, @daemonConfig['wrait_daemon']['port']
+set :port, @daemonConfig['wraith_daemon']['port']
 
 get '/' do
 

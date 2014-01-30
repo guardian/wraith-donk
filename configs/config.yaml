@@ -48,7 +48,7 @@ spider_days:
 
 
 #WraithDaemon
-wrait_daemon:
+wraith_daemon:
   port: 4567
   notifications:
     from: ""
