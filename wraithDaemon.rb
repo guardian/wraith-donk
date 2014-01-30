@@ -5,8 +5,9 @@ require 'yaml'
 
 @daemonConfig = YAML::load(File.open("configs/config.yaml"))
 
-def doit(pidFile)
 
+def doit(pidFile)
+  @daemonConfig = YAML::load(File.open("configs/config.yaml"))
 
   File.open(pidFile, 'w') { |file| file.write("") }
   @config = ('config')
@@ -32,7 +33,6 @@ end
 
 def email
 
-
   message = <<MESSAGE
 From: #{@daemonConfig['wraith_daemon']['notifications']['from']}
 To: #{@daemonConfig['wraith_daemon']['notifications']['to']}
@@ -44,7 +44,6 @@ MESSAGE
   Net::SMTP.start('mx.gc2.dc1.gnm') do |smtp|
     smtp.send_message message, @daemonConfig['wraith_daemon']['notifications']['from'], @daemonConfig['wraith_daemon']['notifications']['to']
   end
-
 
 end
 
