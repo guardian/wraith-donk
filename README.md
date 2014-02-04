@@ -11,7 +11,7 @@ Within these files, make sure to set the ```directory``` directive to ```public/
 Usage
 =====
 
-```ruby wraithDaemon.rb````
+```ruby wraithDaemon.rb```
 
 This will start up a Sinatra server on port 4567
 
