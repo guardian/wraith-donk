@@ -49,8 +49,8 @@ spider_days:
 
 #WraithDaemon
 wraith_daemon:
-  port: 4567
   notifications:
+    smtp_host: ""
     from: ""
     to: ""
     subject: ""

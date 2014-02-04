@@ -2,77 +2,39 @@ require 'sinatra'
 require 'wraith'
 require 'net/smtp'
 require 'yaml'
+require File.join(File.dirname(__FILE__), '/lib/email.rb')
+require File.join(File.dirname(__FILE__), '/lib/wraith_wrapper.rb')
 
-@daemonConfig = YAML::load(File.open("configs/config.yaml"))
+@daemonConfig = YAML::load(File.open("configs/daemon.yaml"))
+set :port, @daemonConfig['port']
 
+get '/:config' do
 
-def doit(pidFile)
-  @daemonConfig = YAML::load(File.open("configs/config.yaml"))
+  config = params[:config]
 
-  File.open(pidFile, 'w') { |file| file.write("") }
-  @config = ('config')
-  folders = Wraith::FolderManager.new(@config)
-  folders.clear_shots_folder
-  folders.create_folders
-  spider = Wraith::Spidering.new(@config)
-  spider.check_for_paths
-  @save_images = Wraith::SaveImages.new(@config)
-  @save_images.save_images
-  crop = Wraith::CropImages.new(@config)
-  crop.crop_images
-  compare = Wraith::CompareImages.new(@config)
-  compare.compare_images
-  thumbs = Wraith::Thumbnails.new(@config)
-  thumbs.generate_thumbnails
-  gallery = Wraith::GalleryGenerator.new(@save_images.directory)
-  gallery.generate_gallery
-  File.delete pidFile
-  email
-
-end
-
-def email
-
-  message = <<MESSAGE
-From: #{@daemonConfig['wraith_daemon']['notifications']['from']}
-To: #{@daemonConfig['wraith_daemon']['notifications']['to']}
-Subject: #{@daemonConfig['wraith_daemon']['notifications']['subject']}
-
-wraith done with errors
-MESSAGE
-
-  Net::SMTP.start('mx.gc2.dc1.gnm') do |smtp|
-    smtp.send_message message, @daemonConfig['wraith_daemon']['notifications']['from'], @daemonConfig['wraith_daemon']['notifications']['to']
+  unless File.exist? "configs/#{config}.yaml"
+    return "Configuration does not exist";
   end
 
-end
+  pid_file = File.expand_path("wraith_#{config}.pid", File.dirname(__FILE__));
 
-#set :root, File.dirname(__FILE__)
-#set :static, true
-#set :public_dir, Proc.new { File.join(File.dirname(__FILE__), "public") }
-
-set :port, @daemonConfig['wraith_daemon']['port']
-
-get '/' do
-
-  params = request.env['rack.request.query_hash']
-
-  pidFile = File.expand_path("wraith.pid", File.dirname(__FILE__));
-
-  if File.exist? pidFile
+  if File.exist? pid_file
     return "Work already in progress, check the gallery for results"
   end
 
-  #if params.include? "fork"
   pid = fork do
-    doit(pidFile)
+    File.open(pid_file, 'w') { |file| file.write("") }
+
+    wrapper = WraithWrapper.new config
+    wrapper.run_wraith
+
+    File.delete pid_file
+
+    emailer = Emailer.new config
+    emailer.send
   end
-  File.open(pidFile, 'w') { |file| file.write("#{pid}") }
+
+  File.open(pid_file, 'w') { |file| file.write("#{pid}") }
   "Started process pid: #{pid}<br/>The results will be visible at /gallery.html"
-  #end
-  #
-  #doit(pidFile)
-  #
-  #redirect to '/gallery.html'
 
 end
