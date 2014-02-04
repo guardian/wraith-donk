@@ -1,4 +1,4 @@
-wraithDaemon
+wraith-donk
 ============
 
 Created to wrap wraith in a web server, so you could kick off work with a CI hook, and see the results whilst using one port only.
