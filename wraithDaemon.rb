@@ -35,6 +35,6 @@ get '/:config' do
   end
 
   File.open(pid_file, 'w') { |file| file.write("#{pid}") }
-  "Started process pid: #{pid}<br/>The results will be visible at /gallery.html"
+  "Started process pid: #{pid}<br/>The results will be visible at /#{config}/gallery.html"
 
 end
