@@ -22,7 +22,7 @@ From: #{from}
 To: #{to}
 Subject: #{subject}
 
-Wraith done with errors.
+Wraith spotted some differences.
 Check #{report_location}/#{@config_name}/gallery.html for details
 
 ---
