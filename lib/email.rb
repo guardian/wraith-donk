@@ -8,6 +8,7 @@ class Emailer
   def send
 
     unless @config['wraith_daemon']['notifications']['enabled']
+      puts 'Notifications are switched off, will not send emails'
       return
     end
 

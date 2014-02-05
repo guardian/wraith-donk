@@ -34,7 +34,7 @@ class WraithRunner
 
     Dir.glob("#{@directory}/**/*.txt") { |fn|
       data = File.open(fn, 'rb') { |io| io.read }
-      diff = diff+data
+      diff = diff+data.to_i
     }
 
     diff > 0
