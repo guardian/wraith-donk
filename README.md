@@ -14,7 +14,11 @@ Usage
 ```ruby wraithDaemon.rb```
 
 This will start up a Sinatra server on port 4567
-You can configure the port in ```configs/daemon.yaml```
+You can configure the port by creating ```configs/daemon.yaml``` with the content:
+
+```yaml
+port: 80
+```
 
 Go to ```localhost:4567/<project_name>``` to kick it off
 
