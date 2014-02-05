@@ -38,4 +38,4 @@ Alternatively you can set up your own web server, and point ```report_location``
 
 ...
 
-and put a donk on it.
+[*Wraith: put a donk on it*](http://www.youtube.com/watch?v=ckMvj1piK58)
