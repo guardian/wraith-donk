@@ -49,7 +49,9 @@ spider_days:
 
 #WraithDaemon
 wraith_daemon:
+  report_location: "http://localhost:4567"
   notifications:
+    enabled: true
     smtp_host: ""
     from: ""
     to: ""
