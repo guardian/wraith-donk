@@ -5,8 +5,10 @@ require 'yaml'
 require File.join(File.dirname(__FILE__), '/lib/email.rb')
 require File.join(File.dirname(__FILE__), '/lib/wraith_runner.rb')
 
-@daemon_config = YAML::load(File.open('configs/daemon.yaml'))
-set :port, @daemon_config['port']
+if File.exists? 'configs/daemon.yaml'
+  daemon_config = YAML::load(File.open('configs/daemon.yaml'))
+  set :port, daemon_config['port']
+end
 
 get '/:config' do
 
