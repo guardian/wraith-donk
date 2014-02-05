@@ -1,7 +1,7 @@
 wraith-donk
 ============
 
-Created to wrap wraith in a web server, so you could kick off work with a CI hook, and see the results whilst using one port only.
+Created to wrap [Wraith](https://github.com/BBC-News/wraith) in a web server, so you could kick off work with a CI hook, and see the results whilst using one port only.
 
 You can set it up to host multiple projects.
 Simply copy the ```configs/config.yaml``` to ```configs/<project_name>.yaml``` to set project specific settings.
