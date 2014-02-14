@@ -24,7 +24,7 @@ class WraithRunner
     compare.compare_images
     thumbs = Wraith::Thumbnails.new(@config)
     thumbs.generate_thumbnails
-    gallery = Wraith::GalleryGenerator.new(@directory)
+    gallery = Wraith::GalleryGenerator.new(@config)
     gallery.generate_gallery
   end
 

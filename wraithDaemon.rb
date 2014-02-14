@@ -8,6 +8,7 @@ require File.join(File.dirname(__FILE__), '/lib/wraith_runner.rb')
 if File.exists? 'configs/daemon.yaml'
   daemon_config = YAML::load(File.open('configs/daemon.yaml'))
   set :port, daemon_config['port']
+  set :bind, daemon_config['listen']
 end
 
 get '/:config' do
@@ -16,7 +17,6 @@ get '/:config' do
 
   unless File.exist? "configs/#{config}.yaml"
     return 'Configuration does not exist'
-    ;
   end
 
   run_config = YAML::load(File.open("configs/#{config}.yaml"))
