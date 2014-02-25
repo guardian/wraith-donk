@@ -36,7 +36,9 @@ class WraithRunner
       data = File.open(fn, 'rb') { |io| io.read }
       diff = diff+data.to_i
     }
-
+    unless diff.is_a?(Numeric)
+	return true
+    end
     diff > 0
 
   end
