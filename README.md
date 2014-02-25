@@ -8,10 +8,14 @@ Simply copy the ```configs/config.yaml``` to ```configs/<project_name>.yaml``` t
 Within these files, make sure to set the ```directory``` directive to ```public/<project_name>```
 
 
+Installation
+============
+```bundle install```
+
 Usage
 =====
 
-```ruby wraithDaemon.rb```
+```bundle exec ruby wraithDaemon.rb```
 
 This will start up a Sinatra server on port 4567
 You can configure the port by creating ```configs/daemon.yaml``` with the content:
