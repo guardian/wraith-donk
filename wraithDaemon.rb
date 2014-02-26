@@ -12,7 +12,7 @@ if File.exists? 'configs/daemon.yaml'
 end
 
 get '/' do
-    '<iframe width="420" height="315" src="//www.youtube.com/embed/ckMvj1piK58" frameborder="0" allowfullscreen></iframe><br /><pre>Another fine tool from <a href="https://github.com/guardian">The Grauniad</a>'
+    '<iframe width="420" height="315" src="//www.youtube.com/embed/ckMvj1piK58" frameborder="0" allowfullscreen></iframe><br /><pre>Another fine tool from <a href="https://github.com/guardian">The Grauniad</a></pre>'
 end
 
 get '/:config' do
