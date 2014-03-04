@@ -36,7 +36,7 @@ get '/:config' do
 
     File.delete pid_file
 
-    if runner.has_differences?
+    if runner.has_differences
       puts 'Some difference spotted, will send notifications'
       emailer = Emailer.new config
       emailer.send
