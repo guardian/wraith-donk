@@ -2,6 +2,7 @@ require 'sinatra'
 require 'wraith'
 require 'net/smtp'
 require 'yaml'
+require 'json'
 require File.join(File.dirname(__FILE__), '/lib/email.rb')
 require File.join(File.dirname(__FILE__), '/lib/wraith_runner.rb')
 
@@ -14,6 +15,13 @@ end
 get '/:config' do
 
   config = params[:config]
+
+  build_history_file = "#{config}.builds.json";
+  unless File.exists? build_history_file
+    File.open(build_history_file, 'w') { |file| file.write('{"builds":[]}') }
+  end
+  builds = JSON.parse(File.read(build_history_file))
+
   build_number = 0;
   if params.include? "build"
     build_number = params["build"]
@@ -37,6 +45,8 @@ get '/:config' do
 
     runner = WraithRunner.new(config, build_number)
     runner.run_wraith
+    builds["builds"].push(build_number)
+    File.open(build_history_file, 'w') { |file| file.write(builds.to_json) }
 
     File.delete pid_file
 
@@ -47,6 +57,17 @@ get '/:config' do
     else
       puts 'No difference spotted, will not send notifications'
     end
+
+
+    if builds['builds'].length > 10
+      (builds['builds'].length-10).times {
+        puts "public/history/#{config}/#{builds['builds'][0]}"
+        FileUtils.rm_rf "public/history/#{config}/#{builds['builds'][0]}"
+        builds['builds'].shift
+      }
+    end
+    File.open(build_history_file, 'w') { |file| file.write(builds.to_json) }
+
   end
 
   File.open(pid_file, 'w') { |file| file.write("#{pid}") }
