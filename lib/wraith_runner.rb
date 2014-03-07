@@ -10,8 +10,9 @@ class WraithRunner
   def run_wraith
     start = Wraith::CLI.new
     start.capture(@config)
+    FileUtils.rm_rf @directory
     FileUtils.mkdir_p @directory
-    FileUtils.mv Dir.glob("#{@original_directory}/*"), @directory, :force => true, :verbose => true
+    FileUtils.mv Dir.glob("#{@original_directory}/*"), @directory, :force => true
   end
 
   def has_differences?

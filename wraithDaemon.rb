@@ -19,6 +19,7 @@ get '/:config' do
   build_history_file = "#{config}.builds.json";
   unless File.exists? build_history_file
     File.open(build_history_file, 'w') { |file| file.write('{"builds":[]}') }
+    FileUtils.rm_rf("public/history/#{config}")
   end
   builds = JSON.parse(File.read(build_history_file))
 
