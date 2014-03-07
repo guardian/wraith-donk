@@ -1,9 +1,9 @@
 GIT
   remote: git://github.com/meza/wraith.git
-  revision: a4a5df1746296f059de46ba41b7bc83468d267d8
+  revision: 3a0523ae024d8a7ddab6cd937b72e40922ddf8e7
   branch: logger
   specs:
-    wraith (1.1.3.2)
+    wraith (1.1.4.1)
       anemone
       image_size
       log4r
@@ -45,4 +45,4 @@ DEPENDENCIES
   nokogiri
   os
   sinatra
-  wraith (= 1.1.3.2)!
+  wraith (= 1.1.4.1)!

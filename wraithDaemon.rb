@@ -14,6 +14,10 @@ end
 get '/:config' do
 
   config = params[:config]
+  build_number = 0;
+  if params.include? "build"
+    build_number = params["build"]
+  end
 
   unless File.exist? "configs/#{config}.yaml"
     return 'Configuration does not exist'
@@ -31,14 +35,14 @@ get '/:config' do
   pid = fork do
     File.open(pid_file, 'w') { |file| file.write("") }
 
-    runner = WraithRunner.new config
+    runner = WraithRunner.new(config, build_number)
     runner.run_wraith
 
     File.delete pid_file
 
     if runner.has_differences?
       puts 'Some difference spotted, will send notifications'
-      emailer = Emailer.new config
+      emailer = Emailer.new(config, build_number)
       emailer.send
     else
       puts 'No difference spotted, will not send notifications'
