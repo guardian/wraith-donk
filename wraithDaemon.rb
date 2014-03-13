@@ -1,9 +1,8 @@
 require 'sinatra'
 require 'wraith'
-require 'net/smtp'
 require 'yaml'
 require 'json'
-require File.join(File.dirname(__FILE__), '/lib/email.rb')
+require File.join(File.dirname(__FILE__), '/lib/notifications.rb')
 require File.join(File.dirname(__FILE__), '/lib/wraith_runner.rb')
 
 if File.exists? 'configs/daemon.yaml'
@@ -53,8 +52,8 @@ get '/:config' do
 
     if runner.has_differences?
       puts 'Some difference spotted, will send notifications'
-      emailer = Emailer.new(config, build_label)
-      emailer.send
+      notifier = Notifications.new(config, build_label)
+      notifier.send
     else
       puts 'No difference spotted, will not send notifications'
     end

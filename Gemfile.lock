@@ -42,7 +42,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  json
+  json (= 1.8.1)
   log4r
   nokogiri
   os
