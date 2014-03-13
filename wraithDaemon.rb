@@ -23,9 +23,9 @@ get '/:config' do
   end
   builds = JSON.parse(File.read(build_history_file))
 
-  build_number = 0;
-  if params.include? "build"
-    build_number = params["build"]
+  build_label = 0;
+  if params.include? 'label'
+    build_label = params['label']
   end
 
   unless File.exist? "configs/#{config}.yaml"
@@ -44,16 +44,16 @@ get '/:config' do
   pid = fork do
     File.open(pid_file, 'w') { |file| file.write("") }
 
-    runner = WraithRunner.new(config, build_number)
+    runner = WraithRunner.new(config, build_label)
     runner.run_wraith
-    builds["builds"].push(build_number)
+    builds["builds"].push(build_label)
     File.open(build_history_file, 'w') { |file| file.write(builds.to_json) }
 
     File.delete pid_file
 
     if runner.has_differences?
       puts 'Some difference spotted, will send notifications'
-      emailer = Emailer.new(config, build_number)
+      emailer = Emailer.new(config, build_label)
       emailer.send
     else
       puts 'No difference spotted, will not send notifications'

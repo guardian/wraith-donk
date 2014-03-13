@@ -24,7 +24,7 @@ You can configure the port by creating ```configs/daemon.yaml``` with the conten
 port: 80
 ```
 
-Go to ```localhost:4567/<project_name>?build=<build_number>``` to kick it off
+Go to ```localhost:4567/<project_name>?label=<build_label>``` to kick it off
 
 If configured in the ```configs/<project_name>.yaml```, it will send out an email notification if there's any difference spotted.
 
@@ -40,7 +40,7 @@ wraith_daemon:
     subject: ""
 ```
 
-Go to ```localhost:4567/history/<project_name>/<build_number>/gallery.html``` to view the results.
+Go to ```localhost:4567/history/<project_name>/<build_label>/gallery.html``` to view the results.
 
 Alternatively you can set up your own web server, and point ```report_location``` to that url, and the notification e-mail will use that location instead.
 

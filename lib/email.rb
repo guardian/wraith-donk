@@ -1,9 +1,9 @@
 class Emailer
 
-  def initialize(config_name, build_number)
+  def initialize(config_name, build_label)
     @config = YAML::load(File.open("configs/#{config_name}.yaml"))
     @config_name = config_name
-    @build_number = build_number
+    @build_label = build_label
   end
 
   def send
@@ -24,7 +24,7 @@ To: #{to}
 Subject: #{subject}
 
 Wraith spotted some differences.
-Check #{report_location}/history/#{@config_name}/#{@build_number}/gallery.html for details
+Check #{report_location}/history/#{@config_name}/#{@build_label}/gallery.html for details
 
 ---
 put a donk on it
