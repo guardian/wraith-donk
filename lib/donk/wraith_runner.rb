@@ -3,7 +3,7 @@ class WraithRunner
 
   def initialize(config_name)
     @config = (config_name)
-    @directory = "/public/#{config_name}"
+    @directory = "/configs/#{config_name}"
   end
 
   def run_wraith

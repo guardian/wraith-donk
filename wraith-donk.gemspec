@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'donk/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "wraithview"
+  spec.name          = "donk"
   spec.version       = Donk::VERSION
   spec.authors       = ["DaveBlooman"]
   spec.email         = ["david.blooman@gmail.com"]

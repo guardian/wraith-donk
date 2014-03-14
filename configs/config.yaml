@@ -8,7 +8,7 @@ device:
   compare: firefox
 
 #If you want to have multiple snapping files, set the file name here
-# snap_file: "lib/wraith/javascript/snap.js"
+snap_file: "javascript/snap.js"
 
 # Type the name of the directory that shots will be stored in
 directory:
@@ -22,15 +22,15 @@ domains:
 #Type screen widths below, here are a couple of examples
 screen_widths:
   - 320
-  - 600
-  - 768
-  - 1024
-  - 1280
+  # - 600
+  # - 768
+  # - 1024
+  # - 1280
 
 #Type page URL paths below, here are a couple of examples
 paths:
   home: /
-  uk_index: /uk
+  # uk_index: /uk
 
 # If you don't want to name the paths explicitly you can use a yaml
 # collection as follows, and names will be derived by replacing / with _
@@ -49,9 +49,9 @@ spider_days:
 
 #WraithDaemon
 wraith_daemon:
-  report_location: "http://localhost:4567"
+  report_location: "http://localhost:3000"
   notifications:
-    enabled: true
+    enabled: false
     smtp_host: ""
     from: ""
     to: ""
