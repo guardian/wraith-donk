@@ -2,21 +2,17 @@ require 'net/smtp'
 class Emailer
 
   def initialize(config, build_label)
-    @config_name = config
+    @config = config
     @build_label = build_label
   end
 
   def send(message)
-    t = @config['wraith_daemon']['notifications']['types'];
-    x = t.find { |h| h['email'] }
-    if x==nil
-      return
-    end
+    conf = @config['wraith_daemon']['notifications']['email'];
 
-    smtp_host = x['email']['smtp_host']
-    from = x['email']['from']
-    to = x['email']['to']
-    subject = x['email']['subject']
+    smtp_host = conf['smtp_host']
+    from = conf['from']
+    to = conf['to']
+    subject = conf['subject']
     message = <<MESSAGE
 From: #{from}
 To: #{to}

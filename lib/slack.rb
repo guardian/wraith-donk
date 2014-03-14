@@ -7,14 +7,9 @@ class Slack
   end
 
   def send(message)
-    t = @config['wraith_daemon']['notifications']['types'];
-    x = t.find { |h| h['slack'] }
-    if x==nil
-      return
-    end
+    conf = @config['wraith_daemon']['notifications']['slack'];
 
-
-    uri = URI.parse(x['slack']['url'])
+    uri = URI.parse(conf['url'])
     payload = {:text => message, :username => 'wraith', :unfurl_links => true}
 
     http = Net::HTTP.new(uri.host, uri.port)

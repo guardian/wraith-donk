@@ -11,24 +11,20 @@ class Notifications
   def send
     unless @config['wraith_daemon']['notifications']['enabled']
       puts 'Notifications are switched off, will not send any'
-      #return
+      return
     end
 
-    notifications = @config['wraith_daemon']['notifications']['types']
-    notifications.each { |type|
-      x = type.keys.first
-      if x=='email'
-        mailer = Emailer.new(@config, @build_label)
+    notifications = @config['wraith_daemon']['notifications']
+    if notifications.include? 'email'
+      mailer = Emailer.new(@config, @build_label)
         mailer.send message
       end
 
-      if x=='slack'
-        mailer = Slack.new(@config, @build_label)
+    if notifications.include? 'slack'
+      mailer = Slack.new(@config, @build_label)
         mailer.send message
       end
 
-
-    }
 
   end
 
