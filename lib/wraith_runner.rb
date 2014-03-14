@@ -1,10 +1,11 @@
 class WraithRunner
   attr_reader :directory
 
-  def initialize(config_name, build_label)
+  def initialize(config_name, build_label, logger)
     @config = (config_name)
     @original_directory = "public/#{config_name}"
     @directory = "public/history/#{config_name}/#{build_label}"
+    @logger = logger
   end
 
   def run_wraith
@@ -13,6 +14,7 @@ class WraithRunner
     FileUtils.rm_rf @directory
     FileUtils.mkdir_p @directory
     FileUtils.mv Dir.glob("#{@original_directory}/*"), @directory, :force => true
+    @logger.info "Stored results in #{@directory}"
   end
 
   def has_differences?

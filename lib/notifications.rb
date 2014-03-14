@@ -2,15 +2,16 @@ require File.join(File.dirname(__FILE__), 'email.rb');
 require File.join(File.dirname(__FILE__), 'slack.rb');
 class Notifications
 
-  def initialize(config_name, build_label)
+  def initialize(config_name, build_label, logger)
     @config = YAML::load(File.open("configs/#{config_name}.yaml"))
     @config_name = config_name
     @build_label = build_label
+    @logger = logger
   end
 
   def send
     unless @config['wraith_daemon']['notifications']['enabled']
-      puts 'Notifications are switched off, will not send any'
+      @logger.info 'Notifications are switched off, will not send any'
       return
     end
 
