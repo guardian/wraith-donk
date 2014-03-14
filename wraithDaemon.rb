@@ -34,7 +34,7 @@ get '/:config' do
   run_config = YAML::load(File.open("configs/#{config}.yaml"))
   report_location = run_config['wraith_daemon']['report_location']
 
-  pid_file = File.expand_path("wraith_#{config}.pid", File.dirname(__FILE__));
+  pid_file = File.expand_path('wraith.pid', File.dirname(__FILE__));
 
   if File.exist? pid_file
     return 'Work already in progress, check the gallery for results'
