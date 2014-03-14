@@ -4,6 +4,8 @@ require 'yaml'
 require 'json'
 require File.join(File.dirname(__FILE__), '/lib/notifications.rb')
 require File.join(File.dirname(__FILE__), '/lib/wraith_runner.rb')
+require File.join(File.dirname(__FILE__), '/lib/build_history.rb')
+require File.join(File.dirname(__FILE__), '/lib/build_queue.rb')
 
 if File.exists? 'configs/daemon.yaml'
   daemon_config = YAML::load(File.open('configs/daemon.yaml'))
@@ -14,18 +16,18 @@ end
 get '/:config' do
 
   config = params[:config]
-
-  build_history_file = "#{config}.builds.json";
-  unless File.exists? build_history_file
-    File.open(build_history_file, 'w') { |file| file.write('{"builds":[]}') }
-    FileUtils.rm_rf("public/history/#{config}")
-  end
-  builds = JSON.parse(File.read(build_history_file))
-
   build_label = 0;
   if params.include? 'label'
     build_label = params['label']
   end
+
+  start(config, build_label)
+
+end
+
+def start(config, build_label)
+  builds = BuildHistory.new config
+  build_queue = BuildQueue.new
 
   unless File.exist? "configs/#{config}.yaml"
     return 'Configuration does not exist'
@@ -37,7 +39,8 @@ get '/:config' do
   pid_file = File.expand_path('wraith.pid', File.dirname(__FILE__));
 
   if File.exist? pid_file
-    return 'Work already in progress, check the gallery for results'
+    build_queue.add(config, build_label)
+    return "Work already in progress. Your build was added to the queue of #{build_queue.length} jobs"
   end
 
   pid = fork do
@@ -45,8 +48,7 @@ get '/:config' do
 
     runner = WraithRunner.new(config, build_label)
     runner.run_wraith
-    builds["builds"].push(build_label)
-    File.open(build_history_file, 'w') { |file| file.write(builds.to_json) }
+    builds.add(build_label)
 
     File.delete pid_file
 
@@ -58,15 +60,13 @@ get '/:config' do
       puts 'No difference spotted, will not send notifications'
     end
 
+    builds.cleanup
 
-    if builds['builds'].length > 10
-      (builds['builds'].length-10).times {
-        puts "public/history/#{config}/#{builds['builds'][0]}"
-        FileUtils.rm_rf "public/history/#{config}/#{builds['builds'][0]}"
-        builds['builds'].shift
-      }
+    unless build_queue.empty?
+      conf, label = build_queue.next
+      start(conf, label)
+      build_queue.save
     end
-    File.open(build_history_file, 'w') { |file| file.write(builds.to_json) }
 
   end
 
