@@ -2,8 +2,8 @@ require File.join(File.dirname(__FILE__), 'email.rb');
 require File.join(File.dirname(__FILE__), 'slack.rb');
 class Notifications
 
-  def initialize(config_name, build_label, logger)
-    @config = YAML::load(File.open("configs/#{config_name}.yaml"))
+  def initialize(config, config_name, build_label, logger)
+    @config = config
     @config_name = config_name
     @build_label = build_label
     @logger = logger

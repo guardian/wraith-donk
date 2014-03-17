@@ -32,6 +32,7 @@ end
 def start(config, build_label)
 
   Log4r::Logger.new('donk')
+  daemon_config = YAML::load(File.open('configs/daemon.yaml'))
 
   if File.exist? LOGGER_CONFIG_FILE_PATH
     Log4r::YamlConfigurator.load_yaml_file(LOGGER_CONFIG_FILE_PATH)
@@ -41,11 +42,17 @@ def start(config, build_label)
   builds = BuildHistory.new config
   build_queue = BuildQueue.new
 
-  unless File.exist? "configs/#{config}.yaml"
+  if daemon_config['config_location'] == nil
+    conf_dir='configs'
+  else
+    conf_dir=daemon_config['config_location']
+  end
+
+  unless File.exist? "#{conf_dir}/#{config}.yaml"
     return 'Configuration does not exist'
   end
 
-  run_config = YAML::load(File.open("configs/#{config}.yaml"))
+  run_config = YAML::load(File.open("#{conf_dir}/#{config}.yaml"))
   report_location = run_config['wraith_daemon']['report_location']
 
   pid_file = File.expand_path('wraith.pid', File.dirname(__FILE__));
@@ -58,7 +65,7 @@ def start(config, build_label)
   pid = fork do
     File.open(pid_file, 'w') { |file| file.write("") }
 
-    runner = WraithRunner.new(config, build_label, logger)
+    runner = WraithRunner.new("#{conf_dir}/#{config}.yaml", config, build_label, logger)
     runner.run_wraith
     builds.add(build_label)
 
@@ -66,7 +73,7 @@ def start(config, build_label)
 
     if runner.has_differences?
       logger.info 'Some difference spotted, will send notifications'
-      notifier = Notifications.new(config, build_label, logger)
+      notifier = Notifications.new(run_config, config, build_label, logger)
       notifier.send
     else
       logger.info 'No difference spotted, will not send notifications'
