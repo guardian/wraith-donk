@@ -1,2 +1,3 @@
 port: 7777
-config_location: configs
+listen: 0.0.0.0
+#config_location: /path/to/project/configs
