@@ -43,19 +43,19 @@ def start(config, build_label)
   build_queue = BuildQueue.new
 
   if daemon_config['config_location'] == nil
-    conf_dir='configs'
+    config_file = "configs/#{config}.yaml"
   else
     conf_dir=daemon_config['config_location']
+    config_file = "#{conf_dir}/#{config}.yaml"
   end
 
-  unless File.exist? "#{conf_dir}/#{config}.yaml"
+  unless File.exist? config_file
     return 'Configuration does not exist'
   end
 
-  run_config = YAML::load(File.open("#{conf_dir}/#{config}.yaml"))
-  report_location = run_config['wraith_daemon']['report_location']
+  run_config = YAML::load(File.open(config_file))
 
-  pid_file = File.expand_path('wraith.pid', File.dirname(__FILE__));
+  pid_file = File.expand_path('wraith.pid', File.dirname(__FILE__))
 
   if File.exist? pid_file
     build_queue.add(config, build_label)
@@ -65,7 +65,7 @@ def start(config, build_label)
   pid = fork do
     File.open(pid_file, 'w') { |file| file.write("") }
 
-    runner = WraithRunner.new("#{conf_dir}/#{config}.yaml", config, build_label, logger)
+    runner = WraithRunner.new(config_file, config, build_label, logger)
     runner.run_wraith
     builds.add(build_label)
 

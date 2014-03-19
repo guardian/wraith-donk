@@ -2,7 +2,12 @@ class WraithRunner
   attr_reader :directory
 
   def initialize(config, config_name, build_label, logger)
-    @config = (config)
+    if config=="configs/#{config_name}.yaml"
+      @config = (config_name)
+    else
+      @config = (config)
+    end
+
     @original_directory = "public/#{config_name}"
     @directory = "public/history/#{config_name}/#{build_label}"
     @logger = logger
