@@ -34,10 +34,13 @@ wraith_daemon:
   report_location: "http://localhost:4567"
   notifications:
     enabled: true
-    smtp_host: ""
-    from: ""
-    to: ""
-    subject: ""
+    email: #optional
+      smtp_host: ""
+      from: ""
+      to: ""
+      subject: ""
+    slack: #optional
+      url: http://project.slack.com/post-webhook...
 ```
 
 Go to ```localhost:4567/history/<project_name>/<build_label>/gallery.html``` to view the results.
