@@ -34,7 +34,7 @@ class Notifications
     report_location = @config['wraith_daemon']['report_location']
     message = <<MESSAGE
 Wraith spotted some differences.
-Check #{report_location}/history/#{@config_name}/#{@build_label}/gallery.html for details
+Check #{report_location}/builds/#{@config_name}/#{@build_label} for details
 MESSAGE
     message
   end
