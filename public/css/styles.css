@@ -1,0 +1,83 @@
+html {
+    height: 100%;
+}
+
+body {
+    min-width: 100px;
+    height: 100%;
+    margin: 0px;
+}
+
+section {
+    height: 100%;
+}
+
+header {
+    background-color: #cc0101;
+    color: #fff;
+    height: 80px;
+    padding-top: 10px;
+    border-bottom: 1px solid black;
+}
+
+header .title {
+    font-size: 46px;
+    font-weight: bold;
+    text-align: center;
+}
+
+header nav {
+    color: #fff;
+    font-size: 18px;
+    vertical-align: baseline;
+    text-align: center;
+}
+
+header nav ul {
+    list-style-type: none;
+}
+
+header nav ul li {
+    display: inline;
+}
+
+header nav a, header nav a:visited {
+    color: inherit;
+    font-size: inherit;
+    text-decoration: none;
+    padding: 5px;
+}
+
+header nav a:hover, header nav a:visited:hover {
+    font-weight: bold;
+}
+
+.push {
+    height: 100%;
+}
+
+.clean {
+    float: none;
+    clear: both;
+}
+
+#projects {
+    padding: 20px;
+}
+
+.project {
+    color: #428BCA;
+    float: left;
+    clear: none;
+    background-color: rgba(200, 180, 200, 0.5);
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    padding: 10px;
+    height: 70px;
+    margin: 10px;
+}
+
+.project .name {
+    font-size: 36px;
+}

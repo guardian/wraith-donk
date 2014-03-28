@@ -1,4 +1,6 @@
-public
+public/*
+!public/css
+.sass-cache
 .idea
 *.iml
 wraith_logger.yaml
