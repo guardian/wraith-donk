@@ -1,0 +1,8 @@
+#projects
+  - @projects.each do |fn|
+    %div{:class=>:project}
+      %div{:class=>:name}= fn[:project].capitalize
+      %div{:class=>:lastBuild}
+        Latest build:
+        %a{:href=>"/builds/#{fn[:project]}/#{fn[:last_build]}"}= fn[:last_build]
+  %br{:class=>:clean}

@@ -3,11 +3,14 @@ require 'wraith'
 require 'yaml'
 require 'json'
 require 'log4r'
+require 'Haml'
 require 'log4r/yamlconfigurator'
 require File.join(File.dirname(__FILE__), '/lib/notifications.rb')
 require File.join(File.dirname(__FILE__), '/lib/wraith_runner.rb')
 require File.join(File.dirname(__FILE__), '/lib/build_history.rb')
 require File.join(File.dirname(__FILE__), '/lib/build_queue.rb')
+require File.join(File.dirname(__FILE__), '/lib/daemon_config.rb')
+require File.join(File.dirname(__FILE__), '/lib/project_manager.rb')
 
 LOGGER_CONFIG_FILE_PATH = 'configs/wraith_logger.yaml'
 
@@ -16,6 +19,50 @@ if File.exists? 'configs/daemon.yaml'
   set :port, daemon_config['port']
   set :bind, daemon_config['listen']
 end
+
+get '/' do
+  project_manager = ProjectManager.new
+  @projects = project_manager.projects
+  haml :home
+end
+
+get '/:config/latest' do
+  daemon_config = DaemonConfig.new
+  config = params[:config]
+  conf_dir=daemon_config.config_dir
+  config_file = "#{conf_dir}/#{config}.yaml"
+
+
+  unless File.exist? config_file
+    return 'Configuration does not exist'
+  end
+
+  builds = BuildHistory.new config
+  latest = builds.history.last
+  redirect "/history/#{config}/#{latest}/gallery.html"
+end
+
+get '/builds/:config/:label' do
+  daemon_config = DaemonConfig.new
+  config = params[:config]
+  label = params[:label]
+  conf_dir=daemon_config.config_dir
+  config_file = "#{conf_dir}/#{config}.yaml"
+
+
+  unless File.exist? config_file
+    return 'Configuration does not exist'
+  end
+
+  file = "public/history/#{config}/#{label}/gallery.html"
+  unless File.exists? file
+    return 'Build does not exist'
+  end
+  @src = "/history/#{config}/#{label}/gallery.html"
+  haml :build
+
+end
+
 
 get '/:config' do
 
@@ -32,7 +79,7 @@ end
 def start(config, build_label)
 
   Log4r::Logger.new('donk')
-  daemon_config = YAML::load(File.open('configs/daemon.yaml'))
+  daemon_config = DaemonConfig.new
 
   if File.exist? LOGGER_CONFIG_FILE_PATH
     Log4r::YamlConfigurator.load_yaml_file(LOGGER_CONFIG_FILE_PATH)
@@ -42,12 +89,9 @@ def start(config, build_label)
   builds = BuildHistory.new config
   build_queue = BuildQueue.new
 
-  if daemon_config['config_location'] == nil
-    config_file = "configs/#{config}.yaml"
-  else
-    conf_dir=daemon_config['config_location']
-    config_file = "#{conf_dir}/#{config}.yaml"
-  end
+  conf_dir=daemon_config.config_dir
+  config_file = "#{conf_dir}/#{config}.yaml"
+
 
   unless File.exist? config_file
     return 'Configuration does not exist'
