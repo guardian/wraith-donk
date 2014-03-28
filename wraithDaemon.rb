@@ -1,10 +1,9 @@
-require 'bundler/setup'
 require 'sinatra'
 require 'wraith'
 require 'yaml'
 require 'json'
 require 'log4r'
-require 'Haml'
+require 'haml'
 require 'log4r/yamlconfigurator'
 require File.join(File.dirname(__FILE__), '/lib/notifications.rb')
 require File.join(File.dirname(__FILE__), '/lib/wraith_runner.rb')
