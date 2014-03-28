@@ -25,8 +25,8 @@ class BuildHistory
   end
 
   def cleanup
-    if history.length > 10
-      (history.length-10).times {
+    if history.length > 3
+      (history.length-3).times {
         FileUtils.rm_rf "public/history/#{@config}/#{history[0]}"
         history.shift
       }
