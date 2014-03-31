@@ -63,8 +63,12 @@ get '/builds/:config/:label' do
 
 end
 
+get '/runner' do
 
-get '/:config' do
+  haml :runner
+end
+
+post '/runner/?' do
 
   config = params[:config]
   build_label = 0;
@@ -74,6 +78,7 @@ get '/:config' do
 
   start(config, build_label)
 
+  redirect '/'
 end
 
 def start(config, build_label)
