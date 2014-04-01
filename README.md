@@ -42,7 +42,7 @@ wraith_daemon:
     slack: #optional
       url: http://project.slack.com/post-webhook...
 ```
-                    `
+
 Go to ```localhost:4567/history/<project_name>/<build_label>/gallery.html``` to view the results.
 
 Alternatively you can set up your own web server, and point ```report_location``` to that url, and the notification e-mail will use that location instead.
