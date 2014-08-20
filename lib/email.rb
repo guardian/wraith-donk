@@ -1,9 +1,17 @@
-require 'net/smtp'
+require 'aws/ses'
+require 'net/http'
+require 'uri'
+require 'rest-client'
+require 'aws-sdk'
+
 class Emailer
 
-  def initialize(config, build_label)
+
+  def initialize(config, build_label, logger)
     @config = config
     @build_label = build_label
+    @logger = logger
+    @url = "http://169.254.169.254/latest/meta-data/iam/security-credentials/"
   end
 
   def send(message)
@@ -24,10 +32,24 @@ Subject: #{subject}
 put a donk on it
 MESSAGE
 
-    Net::SMTP.start(smtp_host) do |smtp|
-      smtp.send_message message, from, to
-    end
+    role = Net::HTTP.get(URI.parse(@url))
+    role_url = "#{@url}#{role}"
+                                  -
+    aws_details = JSON.parse(RestClient.get(role_url))
 
+    ses = AWS::SimpleEmailService.new(
+        :region => 'us-west-2',
+        :access_key_id => aws_details['AccessKeyId'],
+        :secret_access_key => aws_details['SecretAccessKey'],
+        :session_token => aws_details['Token']
+    )
+
+    ses.send_email(
+        :to             => to,
+        :from           => from,
+        :subject        => subject,
+        :body_text      => message
+    )
   end
 
 end
