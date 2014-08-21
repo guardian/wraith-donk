@@ -56,7 +56,6 @@ PLATFORMS
 
 DEPENDENCIES
   aws-sdk (~> 1.0)
-  aws-ses (~> 0.4.4)
   haml
   json (= 1.8.1)
   log4r
