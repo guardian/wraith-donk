@@ -32,7 +32,7 @@ MESSAGE
 
     role = Net::HTTP.get(URI.parse(@url))
     role_url = "#{@url}#{role}"
-                                  -
+                                  
     aws_details = JSON.parse(RestClient.get(role_url))
 
     ses = AWS::SimpleEmailService.new(
