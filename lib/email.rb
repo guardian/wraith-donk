@@ -1,4 +1,3 @@
-require 'aws/ses'
 require 'net/http'
 require 'uri'
 require 'rest-client'
