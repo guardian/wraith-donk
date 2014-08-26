@@ -6,10 +6,9 @@ require 'aws-sdk'
 class Emailer
 
 
-  def initialize(config, build_label, logger)
+  def initialize(config, build_label)
     @config = config
     @build_label = build_label
-    @logger = logger
     @url = "http://169.254.169.254/latest/meta-data/iam/security-credentials/"
   end
 
@@ -33,7 +32,7 @@ MESSAGE
 
     role = Net::HTTP.get(URI.parse(@url))
     role_url = "#{@url}#{role}"
-                                  -
+                                  
     aws_details = JSON.parse(RestClient.get(role_url))
 
     ses = AWS::SimpleEmailService.new(
