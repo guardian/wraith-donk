@@ -36,6 +36,7 @@ MESSAGE
     aws_details = JSON.parse(RestClient.get(role_url))
 
     ses = AWS::SimpleEmailService.new(
+        :server => 'email.eu-west-1.amazonaws.com',
         :region => 'eu-west-1',
         :access_key_id => aws_details['AccessKeyId'],
         :secret_access_key => aws_details['SecretAccessKey'],
