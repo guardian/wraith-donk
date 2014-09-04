@@ -76,6 +76,17 @@ get '/:config' do
 
 end
 
+get '/cleanup/:config' do
+
+  config = params[:config]
+  builds = BuildHistory.new config
+
+  builds.cleanup
+  "cleaned #{config}"
+
+end
+
+
 def start(config, build_label)
 
   Log4r::Logger.new('donk')
