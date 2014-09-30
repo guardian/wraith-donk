@@ -15,7 +15,7 @@ require File.join(File.dirname(__FILE__), '/lib/project_manager.rb')
 LOGGER_CONFIG_FILE_PATH = 'configs/wraith_logger.yaml'
 
 if File.exists? 'configs/daemon.yaml'
-  daemon_config = YAML::load(File.open('configs/daemon.yaml'))
+  daemon_config = YAML::load(File.open('configs/daemon.yAaml'))
   set :port, daemon_config['port']
   set :bind, daemon_config['listen']
 end
@@ -24,6 +24,16 @@ get '/' do
   project_manager = ProjectManager.new
   @projects = project_manager.projects
   haml :home
+end
+
+get '/queue-check' do
+  build_queue = BuildQueue.new
+  if ( build_queue.length < 3)
+    "OK"
+  else
+    status 400
+    body 'Not OK'
+  end
 end
 
 get '/:config/latest' do
@@ -104,6 +114,7 @@ def start(config, build_label)
   config_file = "#{conf_dir}/#{config}.yaml"
 
 
+  unless File.exist? config_file
   unless File.exist? config_file
     return 'Configuration does not exist'
   end
