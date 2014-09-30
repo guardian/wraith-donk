@@ -15,7 +15,7 @@ require File.join(File.dirname(__FILE__), '/lib/project_manager.rb')
 LOGGER_CONFIG_FILE_PATH = 'configs/wraith_logger.yaml'
 
 if File.exists? 'configs/daemon.yaml'
-  daemon_config = YAML::load(File.open('configs/daemon.yAaml'))
+  daemon_config = YAML::load(File.open('configs/daemon.yaml'))
   set :port, daemon_config['port']
   set :bind, daemon_config['listen']
 end
@@ -114,7 +114,6 @@ def start(config, build_label)
   config_file = "#{conf_dir}/#{config}.yaml"
 
 
-  unless File.exist? config_file
   unless File.exist? config_file
     return 'Configuration does not exist'
   end
