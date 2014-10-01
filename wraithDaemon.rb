@@ -26,7 +26,7 @@ get '/' do
   haml :home
 end
 
-get '/queue-check' do
+get '/health-check' do
   build_queue = BuildQueue.new
   if ( build_queue.length < 3)
     "OK"
