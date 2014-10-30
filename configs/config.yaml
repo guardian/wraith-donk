@@ -12,7 +12,7 @@ device:
 
 # Type the name of the directory that shots will be stored in
 directory:
-  - 'shots'
+  - 'public/shots'
 
 # Add only 2 domains, key will act as a label
 domains:

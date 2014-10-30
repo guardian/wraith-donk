@@ -1,0 +1,6 @@
+.runner
+  %h2 Enter a config name
+  %form.form-inline{:action => "/runner", :method => "POST"}
+    %input{:name => "config", :placeholder => "Config", :type => "text"}
+      %input{:name => "label", :placeholder => "Build ID", :type => "text"}
+        %button.btn{:type => "submit"} Go!
