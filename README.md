@@ -1,3 +1,7 @@
+# Deprecated.
+
+June 2018: This tool and repo is no longer maintained or used within the Guardian. 
+
 wraith-donk
 ============
 
